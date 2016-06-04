@@ -1,0 +1,6 @@
+DELETE FROM applied_project.clustering_team;
+LOAD DATA LOCAL INFILE 'clustering_team.csv' INTO TABLE applied_project.clustering_team
+  FIELDS TERMINATED BY ',' 
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+SELECT COUNT(1) FROM applied_project.clustering_team;

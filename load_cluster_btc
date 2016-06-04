@@ -1,0 +1,6 @@
+DELETE FROM applied_project.clustering_btc;
+LOAD DATA LOCAL INFILE 'clustering_btc.csv' INTO TABLE applied_project.clustering_btc
+  FIELDS TERMINATED BY ',' 
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+SELECT COUNT(1) FROM applied_project.clustering_btc;

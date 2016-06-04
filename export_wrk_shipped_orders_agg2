@@ -1,0 +1,52 @@
+(SELECT 'cust_no','bill_to_customer','scn','team','build_type','no_of_prd'
+,'tot_time','tot_units','tot_resale','tot_integ_cost','integ_cost_per_hr'
+,'integ_cost_per_unit','complexity_scale','fiscal_month','fiscal_qtr'
+,'new_reason','bu','cust_group', 'team_group')
+UNION ALL
+SELECT wso.`cust_no`,
+	wso.`bill_to_customer`,
+	wso.`scn`,
+	wso.`team`,
+	wso.`build_type`,
+	wso.`no_of_prd`,
+	wso.`tot_time`,
+	wso.`tot_units`,
+	wso.`tot_resale`,
+	wso.`tot_integ_cost`,
+	wso.`integ_cost_per_hr`,
+	wso.`integ_cost_per_unit`,
+	wso.`complexity_scale`,
+	wso.`fiscal_month`,
+	wso.`fiscal_qtr`,
+	wso.`new_reason`,
+	wso.`bu`,
+    /*
+	case when btc.Assignments = 0 then 'customer_group_0'
+	when btc.Assignments = 1 then 'customer_group_1'
+	when btc.Assignments = 2 then 'customer_group_2'
+	when btc.Assignments = 3 then 'customer_group_3'
+	when btc.Assignments = 4 then 'customer_group_4'
+    when btc.Assignments = 5 then 'customer_group_5'
+	else null end as cust_group,
+    */
+    btc.Assignments as cust_group,
+    /*
+	case when tm.Assignments = 0 then 'team_group_0'
+	when tm.Assignments = 1 then 'team_group_1'
+	when tm.Assignments = 2 then 'team_group_2'
+	when tm.Assignments = 3 then 'team_group_3'
+	when tm.Assignments = 4 then 'team_group_4'
+    when tm.Assignments = 5 then 'team_group_5'
+	else null end as team_group
+    */
+    tm.Assignments as team_group
+FROM `applied_project`.`wrk_shipped_orders_agg2` wso
+INNER JOIN applied_project.clustering_btc btc
+ON (btc.bill_to_customer = wso.bill_to_customer)
+INNER JOIN applied_project.clustering_team tm
+ON (tm.team = wso.team)
+INTO OUTFILE '/tmp/wrk_shipped_orders_agg2.csv' 
+FIELDS ENCLOSED BY '' 
+TERMINATED BY ',' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\n';

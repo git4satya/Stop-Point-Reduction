@@ -1,0 +1,6 @@
+DELETE FROM applied_project.total_orders_increment;
+LOAD DATA LOCAL INFILE './consolidated_shipment_reduced.csv' INTO TABLE applied_project.total_orders_increment
+  FIELDS TERMINATED BY ',' 
+  LINES TERMINATED BY '\n'
+  IGNORE 1 LINES;
+SELECT COUNT(1) FROM applied_project.total_orders_increment;

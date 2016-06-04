@@ -1,0 +1,13 @@
+(SELECT 'team', 'tot_units', 'tot_cost', 'tot_time', 'tot_orders', 'tot_resale')
+UNION ALL
+SELECT team, sum(units) tot_units, sum(integ_cost) tot_cost
+        ,  sum(Sch_Touch_Time) tot_time, count(distinct scn) tot_orders
+        ,  sum(resale) tot_resale
+        FROM applied_project.total_orders_master
+        group by 1
+INTO OUTFILE '/tmp/export_team_cluster_master.csv' 
+FIELDS ENCLOSED BY '' 
+TERMINATED BY ',' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\n';
+SELECT 'export_team_cluster_master.csv - COMPLETED';

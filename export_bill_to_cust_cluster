@@ -1,0 +1,15 @@
+(SELECT 'bill_to_customer', 'tot_units', 'tot_cost', 'tot_time'
+        , 'tot_orders', 'tot_resale')
+UNION ALL
+SELECT Bill_To_Customer, sum(units) tot_units, sum(integ_cost) tot_cost
+        ,  sum(Sch_Touch_Time) tot_time, count(distinct scn) tot_orders
+        ,  sum(resale) tot_resale
+        FROM applied_project.total_orders_master
+        group by 1
+INTO OUTFILE '/tmp/export_bill_to_cust_cluster_master.csv' 
+FIELDS ENCLOSED BY '' 
+TERMINATED BY ',' 
+ESCAPED BY '"' 
+LINES TERMINATED BY '\n';
+
+select 'export_bill_to_cust_cluster_master.csv - COMPLETED';
